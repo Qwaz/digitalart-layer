@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Layer</title>
+    <link rel="stylesheet" href="social-icons/css/fontello.css">
+
+    <style>
+        body {
+            background-color: #212121;
+        }
+
+        canvas {
+            position:absolute;
+            left:50%;
+            top:50%;
+            margin-left:-400px;
+            margin-top:-400px;
+        }
+    </style>
+</head>
+<body>
+<span id="loader" style="font-family: fontello; visibility: hidden;"></span>
+
+<script src="bower_components/pixi.js/bin/pixi.min.js"></script>
+<script>
+    "use strict";
+
+    var renderer = PIXI.autoDetectRenderer(800, 800, { transparent: true });
+    document.body.appendChild(renderer.view);
+
+    var stage = new PIXI.Container();
+
+    setTimeout(function () {
+        var sample = new PIXI.Text('\ue800', {font: '25px fontello', fill: 'white'});
+        sample.position.set(20, 20);
+        stage.addChild(sample);
+    }, 100);
+
+    animate();
+    function animate() {
+        requestAnimationFrame(animate);
+
+        //Update here
+
+        renderer.render(stage);
+    }
+</script>
+</body>
+</html>
