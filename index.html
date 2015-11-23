@@ -11,11 +11,11 @@
         }
 
         canvas {
-            position:absolute;
-            left:50%;
-            top:50%;
-            margin-left:-400px;
-            margin-top:-400px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -400px;
+            margin-top: -400px;
         }
     </style>
 </head>
@@ -26,14 +26,87 @@
 <script>
     "use strict";
 
-    var renderer = PIXI.autoDetectRenderer(800, 800, { transparent: true });
+    var icons = [
+        {name: 'aim_alt', content: '\ue800'},
+        {name: 'formspring', content: '\ue801'},
+        {name: 'skype', content: '\ue802'},
+        {name: 'soundcloud', content: '\ue803'},
+        {name: 'squarespace', content: '\ue804'},
+        {name: 'foursquare', content: '\ue805'},
+        {name: 'app_store', content: '\ue806'},
+        {name: 'amazon', content: '\ue807'},
+        {name: 'apple', content: '\ue808'},
+        {name: 'basecamp', content: '\ue809'},
+        {name: 'google_buzz', content: '\ue80a'},
+        {name: 'github_alt', content: '\ue80b'},
+        {name: 'squidoo', content: '\ue80c'},
+        {name: 'steam', content: '\ue80d'},
+        {name: 'stumbleupon', content: '\ue80e'},
+        {name: 'google_talk', content: '\ue80f'},
+        {name: 'behance', content: '\ue810'},
+        {name: 'bing', content: '\ue811'},
+        {name: 'gowalla_alt', content: '\ue812'},
+        {name: 'technorati', content: '\ue813'},
+        {name: 'hype_machine', content: '\ue814'},
+        {name: 'dailybooth', content: '\ue815'},
+        {name: 'vimeo', content: '\ue816'},
+        {name: 'icq', content: '\ue817'},
+        {name: 'twitter_alt', content: '\ue818'},
+        {name: 'w3', content: '\ue819'},
+        {name: 'krop', content: '\ue81a'},
+        {name: 'designfloat', content: '\ue81b'},
+        {name: 'deviantart', content: '\ue81c'},
+        {name: 'last.fm', content: '\ue81d'},
+        {name: 'whatsapp', content: '\ue81e'},
+        {name: 'wikipedia', content: '\ue81f'},
+        {name: 'linkedin_alt', content: '\ue820'},
+        {name: 'digg_alt', content: '\ue821'},
+        {name: 'digg', content: '\ue822'},
+        {name: 'livejournal', content: '\ue823'},
+        {name: 'windows', content: '\ue824'},
+        {name: 'wordpress', content: '\ue825'},
+        {name: 'openid', content: '\ue826'},
+        {name: 'dribbble', content: '\ue827'},
+        {name: 'dropbox', content: '\ue828'},
+        {name: 'paypal', content: '\ue829'},
+        {name: 'yahoo!_messenger', content: '\ue82a'},
+        {name: 'yahoo!', content: '\ue82b'},
+        {name: 'picassa', content: '\ue82c'},
+        {name: 'ebay', content: '\ue82d'},
+        {name: 'evernote', content: '\ue82e'},
+        {name: 'playstation', content: '\ue82f'},
+        {name: 'yelp', content: '\ue830'},
+        {name: 'youtube_alt', content: '\ue831'},
+        {name: 'reddit', content: '\ue832'},
+        {name: 'facebook_alt', content: '\ue833'},
+        {name: 'sharethis', content: '\ue834'},
+        {name: 'youtube', content: '\ue835'},
+        {name: 'flickr', content: '\ue836'},
+        {name: 'rss', content: '\ue837'},
+        {name: 'feedburner', content: '\ue838'},
+        {name: 'blogger', content: '\ue839'},
+        {name: 'diigo', content: '\ue83a'},
+        {name: 'ebay-1', content: '\ue83b'}
+    ];
+
+    var renderer = PIXI.autoDetectRenderer(800, 800, {transparent: true});
     document.body.appendChild(renderer.view);
 
     var stage = new PIXI.Container();
 
     setTimeout(function () {
-        var sample = new PIXI.Text('\ue800', {font: '25px fontello', fill: 'white'});
-        sample.position.set(20, 20);
+        var text = '';
+        for (var index in icons) {
+            var obj = icons[index];
+            text += obj.content;
+            if (index % 10 == 9) {
+                text += '\n';
+            }
+        }
+        var sample = new PIXI.Text(text, {
+            font: '15px fontello',
+            fill: 'white'
+        });
         stage.addChild(sample);
     }, 100);
 
