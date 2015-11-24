@@ -7,7 +7,7 @@
 
     <style>
         body {
-            background-color: #000000;
+            background-color: black;
         }
 
         canvas {
@@ -102,15 +102,26 @@
     function mapping(color) {
         var converted = icons[0].pixel +
                 (icons[icons.length-1].pixel - icons[0].pixel) * (color/255);
-        for (var index = 0; index < icons.length; index++) {
-            if (index == icons.length-1 || icons[index+1].pixel > converted) {
-                return icons[index].content;
+        var left = 0, right = icons.length- 1, target;
+        if (icons[right].pixel <= converted) {
+            target = right;
+        } else {
+            while (left <= right) {
+                var m = Math.floor((left+right)/2);
+                if (icons[m].pixel <= converted) left = m+1;
+                else right = m-1;
             }
+            target = right;
         }
-        var left = 0, right = icons.length-1;
-        while (left < right) {
-            var m = Math.floor((left+right)/2);
+
+        if (Math.random() < 0.2) {
+            var candidates = [];
+            if (target > 0) candidates.push(target-1);
+            if (target < icons.length-1) candidates.push(target+1);
+            target = candidates[Math.floor(Math.random() * candidates.length)];
         }
+
+        return icons[target].content;
     }
 
     function countFill(color) {
