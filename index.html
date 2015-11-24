@@ -99,14 +99,20 @@
         return a.pixel - b.pixel;
     });
 
-    function mapping(target) {
+    function mapping(color) {
         var converted = icons[0].pixel +
-                (icons[icons.length-1].pixel - icons[0].pixel) * (target/255);
+                (icons[icons.length-1].pixel - icons[0].pixel) * (color/255);
         for (var index = 0; index < icons.length; index++) {
             if (index == icons.length-1 || icons[index+1].pixel > converted) {
                 return icons[index].content;
             }
         }
+    }
+
+    function countFill(color) {
+        const BASE = 0x70;
+        var converted = Math.round(BASE + (0xff-BASE) * (color/255));
+        return converted * 0x010101;
     }
 
     var renderer = PIXI.autoDetectRenderer(750, 800, {transparent: true});
@@ -115,19 +121,18 @@
     var stage = new PIXI.Container();
 
     setTimeout(function () {
-        var text = '';
         for (var y = 0; y < 50; y++) {
             for (var x = 0; x < 50; x++) {
-                text += mapping(image[y*50 + x]);
+                var text = new PIXI.Text(mapping(image[y*50 + x]), {
+                    font: '15px fontello',
+                    fill: countFill(image[y*50 + x])
+                });
+                stage.addChild(text);
+                text.position.x = x*15;
+                text.position.y = y*16;
             }
-            text += '\n';
         }
-        var sample = new PIXI.Text(text, {
-            font: '15px fontello',
-            fill: 'white'
-        });
-        stage.addChild(sample);
-    }, 200);
+    }, 100);
 
     animate();
     function animate() {
