@@ -14,7 +14,7 @@
             position: absolute;
             left: 50%;
             top: 50%;
-            margin-left: -400px;
+            margin-left: -375px;
             margin-top: -400px;
         }
     </style>
@@ -22,6 +22,8 @@
 <body>
 <span id="loader" style="font-family: fontello; visibility: hidden;"></span>
 
+<script src="image_processing/image.js"></script>
+<script src="image_processing/pixels.js"></script>
 <script src="bower_components/pixi.js/bin/pixi.min.js"></script>
 <script>
     "use strict";
@@ -89,26 +91,43 @@
         {name: 'ebay-1', content: '\ue83b'}
     ];
 
-    var renderer = PIXI.autoDetectRenderer(800, 800, {transparent: true});
+    for (var index = 0; index < pixels.length; index++) {
+        icons[index].pixel = pixels[index];
+    }
+
+    icons.sort(function (a, b) {
+        return a.pixel - b.pixel;
+    });
+
+    function mapping(target) {
+        var converted = icons[0].pixel +
+                (icons[icons.length-1].pixel - icons[0].pixel) * (target/255);
+        for (var index = 0; index < icons.length; index++) {
+            if (index == icons.length-1 || icons[index+1].pixel > converted) {
+                return icons[index].content;
+            }
+        }
+    }
+
+    var renderer = PIXI.autoDetectRenderer(750, 800, {transparent: true});
     document.body.appendChild(renderer.view);
 
     var stage = new PIXI.Container();
 
     setTimeout(function () {
         var text = '';
-        for (var index in icons) {
-            var obj = icons[index];
-            text += obj.content;
-            if (index % 10 == 9) {
-                text += '\n';
+        for (var y = 0; y < 50; y++) {
+            for (var x = 0; x < 50; x++) {
+                text += mapping(image[y*50 + x]);
             }
+            text += '\n';
         }
         var sample = new PIXI.Text(text, {
             font: '15px fontello',
             fill: 'white'
         });
         stage.addChild(sample);
-    }, 100);
+    }, 200);
 
     animate();
     function animate() {
