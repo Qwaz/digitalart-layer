@@ -7,7 +7,7 @@
 
     <style>
         body {
-            background-color: #212121;
+            background-color: #000000;
         }
 
         canvas {
@@ -107,10 +107,14 @@
                 return icons[index].content;
             }
         }
+        var left = 0, right = icons.length-1;
+        while (left < right) {
+            var m = Math.floor((left+right)/2);
+        }
     }
 
     function countFill(color) {
-        const BASE = 0x70;
+        const BASE = 0x40;
         var converted = Math.round(BASE + (0xff-BASE) * (color/255));
         return converted * 0x010101;
     }
@@ -119,6 +123,7 @@
     document.body.appendChild(renderer.view);
 
     var stage = new PIXI.Container();
+    stage.alpha = 0;
 
     setTimeout(function () {
         for (var y = 0; y < 50; y++) {
@@ -132,7 +137,15 @@
                 text.position.y = y*16;
             }
         }
-    }, 100);
+
+        var id = setInterval(function () {
+            stage.alpha += 0.008;
+            if (stage.alpha >= 1) {
+                stage.alpha = 1;
+                clearInterval(id);
+            }
+        }, 10);
+    }, 200);
 
     animate();
     function animate() {
