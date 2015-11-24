@@ -114,7 +114,7 @@
             target = right;
         }
 
-        return icons[target].content;
+        return target;
     }
 
     function countFill(color) {
@@ -129,16 +129,30 @@
     var stage = new PIXI.Container();
     stage.alpha = 0;
 
+    var textList = [];
+    var init = false;
+
     setTimeout(function () {
         for (var y = 0; y < 50; y++) {
             for (var x = 0; x < 50; x++) {
-                var text = new PIXI.Text(mapping(image[y*50 + x]), {
+                var index = mapping(image[y*50 + x]);
+                var text = new PIXI.Text(icons[index].content, {
                     font: '15px fontello',
                     fill: countFill(image[y*50 + x])
                 });
                 stage.addChild(text);
                 text.position.x = x*15;
                 text.position.y = y*16;
+
+                var obj = {
+                    index: index,
+                    text: text,
+                    candidates: []
+                };
+
+                if (index > 0) obj.candidates.push(index-1);
+                if (index < icons.length - 1) obj.candidates.push(index+1);
+                textList.push(obj);
             }
         }
 
@@ -149,6 +163,8 @@
                 clearInterval(id);
             }
         }, 10);
+
+        init = true;
     }, 200);
 
     animate();
@@ -156,6 +172,13 @@
         requestAnimationFrame(animate);
 
         //Update here
+        if (init) {
+            for (var i = 0; i < 100; i++) {
+                var toChange = Math.floor(Math.random() * textList.length);
+                if (Math.random() < 0.8) textList[toChange].text.text = icons[textList[toChange].index].content;
+                else textList[toChange].text.text = icons[textList[toChange].candidates[Math.floor(textList[toChange].candidates.length * Math.random())]].content;
+            }
+        }
 
         renderer.render(stage);
     }
